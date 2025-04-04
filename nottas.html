@@ -1,0 +1,44 @@
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    // return view('welcome');
+    return "Welcome to the homepage";
+});
+
+Route::get('/posts', function () {
+    return "Aqui se listarán todos los posts";
+});
+Route::get('/posts/create', function () {
+    return "Aquí se moostrará un formulario para mostrar un POST";
+});
+Route::get('/posts/{post}', function ($post) {// Rutas con parámetros
+        return "Aqui se listarán todos los post {$post}";
+});
+
+
+// ----------------------------------------------------------------
+// Route::get('/posts/{post}/{category?}', function ($post, $category = null) {
+
+//     if($category) {
+//         return "Aqui se listarán todos los post {$post} de la categoria {$category}";
+//     }
+//     return "Aqui se listarán todos los post {$post}";
+// });
+// Route::get('/posts/{post}/{categoria}', function ($post, $categoria) {
+//      return "<h1 style=color:blue; text-align: center>Aqui se listarán todos los {$post} de la categoria {$categoria}</h1>";
+// });
+
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/create', [PostController::class, 'create']);
+Route::get('/posts/{post}', [PostController::class, 'show']);

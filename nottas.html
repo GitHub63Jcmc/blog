@@ -42,3 +42,25 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/create', [PostController::class, 'create']);
 Route::get('/posts/{post}', [PostController::class, 'show']);
+
+
+
+------------------------- Expresiones regulares ---------------------------
+Route::get('/posts/{post?}', function($post){
+    return "Bienvenido al Post: $post";
+})->where('post', '[A-Za-z]+');
+
+Route::get('/posts/{post}/{category}', function($post, $category){
+    return "Bienvenido al Post: $post";
+})->where([
+    'post' => '[A-Za-z]',
+    'category' => '[A-Za-z]'
+]);
+
+Route::get('/posts/{post}/{category}', function($post, $category){
+    return "Bienvenido al Post: $post";
+})->whereAlpha('post'); // Solo acepta valores alfabéticos
+
+Route::get('/posts/{post}/{category}', function($post, $category){
+    return "Bienvenido al Post: $post";
+})->whereNumeric('post'); // Solo acepta valores numericos

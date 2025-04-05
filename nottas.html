@@ -118,3 +118,46 @@ Route::get('/cursos/{id}', function($id) {  // Para las bases de datos (pedir po
 Gracias Víctor Arana. 
 
 Tengo un problema con el HostVirtual que no me esta funcionando porque tengo xampp instalado en C:\ pero tengo la carpeta HTDOCS en D:\. Formalizaré la pregunta brevemente de como solucionar, aportando los cambios de los archivos "php.ini", "httpd.conf" que hice anteriormente para tener cualquier proyecto en la unidad D:\.
+
+-------------------------- Reducir todas ESTAS rutas en una sola ---------------------
+<?php
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class, 'index']);
+
+// Ruta para mostrar el listado de registros
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+// Ruta para mostrar un formulario para crear un registro
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+
+// Ruta para guardar un registro
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+
+// Ruta para mostrar un registro
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+// Ruta para mostrar un formulario para editar un registro
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+// Ruta para actualizar un registros
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+
+// Ruta para eliminar un registros
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+                                    ------- X REDUCIDAS X ------------
+
+// // Ruta para mostrar un formulario para editar un registro
+// Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+// // Ruta para actualizar un registros
+// Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+
+// // Ruta para eliminar un registros
+// Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+Route::resource('$posts', PostController::class)->except('create', 'edit');

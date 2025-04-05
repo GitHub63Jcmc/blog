@@ -1,28 +1,31 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
-    return "Hola desde la página de inicio";
+Route::get('/', [HomeController::class, 'index']);
 
-    // return view('welcome');
-});
-Route::get('/contacto', function() {
-    return "Hola desde la página de contacto usando GET";
-});
+// Ruta para mostrar el listado de registros
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
-Route::get('/cursos/informacion', function() {
-    return "Aqui podrás encontrar toda la información de los cursos";
-});
+// Ruta para mostrar un formulario para crear un registro
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 
-Route::get('/cursos/{curso}', function($curso) {
- 
-    return "Bienvenido al curso: $curso";
-});
+// Ruta para guardar un registro
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
+// Ruta para mostrar un registro
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
+// Ruta para mostrar un formulario para editar un registro
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+// Ruta para actualizar un registros
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+
+// Ruta para eliminar un registros
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 
 

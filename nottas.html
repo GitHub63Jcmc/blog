@@ -64,3 +64,57 @@ Route::get('/posts/{post}/{category}', function($post, $category){
 Route::get('/posts/{post}/{category}', function($post, $category){
     return "Bienvenido al Post: $post";
 })->whereNumeric('post'); // Solo acepta valores numericos
+
+---------------------  Cómo proteger rutas con expresiones regulares ---------------------
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function() {
+    return "Hola desde la página de inicio";
+
+    // return view('welcome');
+});
+Route::get('/contacto', function() {
+    return "Hola desde la página de contacto usando GET";
+});
+
+Route::get('/cursos/informacion', function() {
+    return "Aqui podrás encontrar toda la información de los cursos";
+});
+
+Route::get('/cursos/{curso}', function($curso) {
+ 
+    return "Bienvenido al curso: $curso";
+})->whereIn('curso', ['php', 'laravel', 'vue']);
+
+Route::get('/cursos/{curso}', function($curso) {
+    return "Bienvenido al curso: $curso";
+})->where('curso', '[A-Za-z]+'); // expresiones regulares (solo admite valores alfabéticos)
+
+Route::get('/cursos/{curso}', function($curso) {
+    return "Bienvenido al curso: $curso";
+})->where('curso', '[0-9]+'); // expresiones regulares (solo admite numericos)
+
+Route::get('/cursos/{curso}/{category}', function($curso, $category) {
+    return "Bienvenido al curso: {$curso} de la categoria: {$category}";
+})->where([
+    'curso' => '[A-Za-z]+',
+    'category' => '[A-Za-z]+'
+]); 
+
+Route::get('/cursos/{curso}/{category}', function($curso, $category) {
+    return "Bienvenido al curso: {$curso} de la categoria: {$category}";
+})->whereAlphaNumeric('curso', '[A-Za-z]+'); 
+
+
+Route::get('/cursos/{id}', function($id) {  // Para las bases de datos (pedir por ID)
+    return "Bienvenido al curso con id: {$id}";
+});
+
+
+------------  Pregunta para el curso -------------------------
+Gracias Víctor Arana. 
+
+Tengo un problema con el HostVirtual que no me esta funcionando porque tengo xampp instalado en C:\ pero tengo la carpeta HTDOCS en D:\. Formalizaré la pregunta brevemente de como solucionar, aportando los cambios de los archivos "php.ini", "httpd.conf" que hice anteriormente para tener cualquier proyecto en la unidad D:\.

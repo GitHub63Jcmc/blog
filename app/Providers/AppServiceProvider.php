@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Route::pattern('id', '[0-9+]');
+        Route::pattern('id', '[0-9]+');
+
+        Route::resourceVerbs([
+            'create' => 'crear',
+            'edit' => 'editar',
+        ]);
     }
 }

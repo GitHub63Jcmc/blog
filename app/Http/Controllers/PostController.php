@@ -23,8 +23,8 @@ class PostController extends Controller
             ]
         ];
 
-        $valor_null = 45;
-        return view('posts.index', compact('posts', 'valor_null'));
+        // $posts = [];
+        return view('posts.index', compact('posts'));
     }
     public function create(){
         return view('posts.create');

@@ -9,24 +9,20 @@
 <body>
     <h1>Aquí se mostrará el LISTADO de POSTS</h1>
 
-    @if (false)
-        <p>Este mensaje se mostrará si el valor de la condicional es VERDADERO</p>
-    @else
-        <p>Este mensaje se mostrará si el valor de la condicional es FALSO</p>
-    @endif
-    
-    @unless (false)
-        <p>Le has pasado el valor de false a la directiva UNLESS</p>
-    @endunless
+    <ul>
+        @forelse ($posts as $post)
+            <li>
+                <h2>{{ $post ['title'] }}</h2>
+                <p>{{ $post ['content'] }}</p>
+            </li>
+        @empty
+            <li style="color: red; font-size: 20px; text-align: center; background:black; font-weight: bold; padding: 10px 10px; border-radius: 8px; border: solid red 5px">
+                <h2>No hay datos</h2>
+            </li>
+        @endforelse
+    </ul>
 
-    @isset($prueba)
-        <p>La variable <span style="color: red; padding: 10px; margin: 10px; background-color: blue; border-radius: 8px"> " {{$prueba}} " </span>  existe y tiene un valor asignado</p>
-        @else
-        <p>La variable <span style="color: blue; padding: 10px; margin: 10px; background-color: red; border-radius: 8px"> " {{$prueba}} " </span> No existe o NO tiene un valor asignado.</p>
-    @endisset
 
-    @empty($valor_null)
-        <p>La variable <span style="color: blue; padding: 10px; margin: 10px; background-color: red; border-radius: 8px"> " {{$valor_null}} " </span> No existe o NO tiene un valor asignado, Joao.</p>
-    @endempty
+
 </body>
 </html>

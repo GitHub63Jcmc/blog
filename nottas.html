@@ -250,4 +250,29 @@ class PostController extends Controller
 
 }
                                 
-----------------------------------------------------------------------------
+------------------------- Condicionales --------------------------------
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coders Free | Index Laravel 12</title>
+</head>
+<body>
+    <h1>Aquí se mostrará el LISTADO de POSTS</h1>
+
+    @if (false)
+        <p>Este mensaje se mostrará si el valor de la condicional es VERDADERO</p>
+    @else
+        <p>Este mensaje se mostrará si el valor de la condicional es FALSO</p>
+    @endif
+
+    UNLESS FUNCIONA AL CONTRARIO 
+    
+    @unless (false)
+        <p>Le has pasado el valor de false a la directiva UNLESS</p>
+    @endunless
+
+</body>
+</html>

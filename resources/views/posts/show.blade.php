@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laravel 11/12 - SHOW</title>
+    <title>Show Posts | L 12</title>
 </head>
 <body>
-    <h1>Aqui se listarán todos los post {{ $post }} </h1>
-
+    <h1>Aquí se mostrará el DETALLE del post: <?php echo $post ?></h1>
+    <p><?php echo $prueba2 ?></p>
 </body>
 </html>

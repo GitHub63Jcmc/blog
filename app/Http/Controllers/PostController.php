@@ -10,12 +10,12 @@ class PostController extends Controller
         $posts = [
             [
                 'title' => 'Post 1',
-                'content' => 'Contenido del post 1'
+                'content' => 'Contenido del post 1',
             ],
 
             [
                 'title' => 'Post 2',
-                'content' => 'Contenido del post 2'
+                'content' => 'Contenido del post 2',
             ],
             [
                 'title' => 'Post 3',
@@ -23,8 +23,8 @@ class PostController extends Controller
             ]
         ];
 
-        // $posts = [];
-        return view('posts.index', compact('posts'));
+        
+        return view('posts.index', compact('posts', ));
     }
     public function create(){
         return view('posts.create');

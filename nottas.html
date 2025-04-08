@@ -382,4 +382,25 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    
+    --------------- Directiva @for y @while ---------------------
+    @for ($i = 1; $i <= $count; $i++)
+    <p>
+        @for ($j = 1; $j <= $i; $j++)
+            *
+        @endfor
+    </p>
+@endfor
+
+@php
+    $i = 1;
+@endphp
+
+@while ($i <= $count)
+    <p>
+        *
+    </p>
+    @php
+        $i += 1;
+    @endphp
+@endwhile
+

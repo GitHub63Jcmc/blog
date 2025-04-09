@@ -18,18 +18,5 @@
 <body>
     <h1>Aquí se mostrará el LISTADO de POSTS</h1>
 
-    <ul>
-        @foreach ($posts as $post )
-            <li @class([
-                'color-red' => $loop->first,
-                'color-green' => $loop->last,
-            ])>
-                <h2>
-                    {{ $post['title']}}
-                </h2>
-                <p>{{$post['content']}}</p>
-            </li>
-        @endforeach
-    </ul>
 </body>
 </html>

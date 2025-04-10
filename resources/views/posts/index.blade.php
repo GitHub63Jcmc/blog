@@ -15,6 +15,8 @@
             </x-slot>
             Cambie algunas cosas e intente enviarlo nuevamente.
         </x-alert>
+
+        <h1>Index</h1>
     </x-container>
     
 @endsection

@@ -10,16 +10,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->mediumText('body')
-                ->change();
+            $table->dropColumn('slug');
         });
     }
 
     public function down(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->longText('body')
-            ->change();
+            $table->string('slug')
+                ->unique()
+                ->after('title');
         });
     }
 };

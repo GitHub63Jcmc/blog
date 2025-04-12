@@ -14,11 +14,8 @@ Route::resource('posts', PostController::class);
 
 Route::get('/prueba', function(){
 
-    // Fitrar registros por ID
-    $categories = DB::table('categories')
-        ->where('id', '>', 1)
-        ->pluck('name', 'id');
-
-    return $categories;
+    return DB::table('users')
+        ->select('id', 'name as title', 'email')
+        ->get();
 
 });

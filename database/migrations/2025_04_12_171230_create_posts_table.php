@@ -11,17 +11,26 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('body');
+            
+            $table->foreignId('user_id')
+            ->constrained()
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreignId('category_id')
+            ->constrained()
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+
+            
             $table->timestamp('published_at');
+
             $table->timestamps();
             
-            // Indices 
-            $table->index('title');
-            $table->fullText('body');
-
         });
     }
 

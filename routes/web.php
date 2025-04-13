@@ -15,7 +15,10 @@ Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
 
     return DB::table('users')
-        ->select('id', 'name as title', 'email')
+        ->select('name', 'name as title', 'email')
         ->get();
 
 });
+
+
+

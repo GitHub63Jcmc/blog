@@ -15,7 +15,9 @@ Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
 
     return DB::table('users')
-        ->select('name', 'name as title', 'email')
+        // ->where('email', 'like', '%@example.org')
+        // ->orWhere('email', 'like', '%@example.net')
+        ->whereNot('email', 'like', '%@example.com')
         ->get();
 
 });

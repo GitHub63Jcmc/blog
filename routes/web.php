@@ -12,23 +12,11 @@ Route::get('/', HomeController::class);
 Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
      
-    DB::table('users')->upsert(
-        [
-            'name' => 'Joao Cabral',
-            'last_name' => 'de Matos Carvalho',
-            'email' => 'joaocabral@devfullstack.com',
-            'password' => bcrypt('123456789')
-        ],
-        [
-            'email'
-        ],
-        [
-            'name',
-            'last_name'
-        ]
-    );
+    DB::table('users')
+        ->where('id', 1000)
+        ->delete();
 
-    return 'Usuario creado o actualizado correctamente';
+    return 'Usuario se Elimino correctamente';
 });
 
 

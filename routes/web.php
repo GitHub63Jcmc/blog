@@ -10,18 +10,15 @@ Route::get('/', HomeController::class);
 // Route::prefix('posts')->name('posts.')->controller(PostController::class)->group(function() {
 
 Route::resource('posts', PostController::class);
-
-
 Route::get('/prueba', function(){
+     
+    $prueba = null;
 
     return DB::table('users')
-        ->where('id', '>=', '10')
-        ->where(function($query){
-            $query->where('email', 'like', '%example.org%')
-            ->orWhere('id', '>=', 'like', '%example.net%');
+        ->when($prueba, function($query, $prueba){
+            $query->where('id', '>=', $prueba);
         })
         ->get();
-
 });
 
 

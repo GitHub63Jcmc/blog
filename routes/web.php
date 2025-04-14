@@ -12,13 +12,23 @@ Route::get('/', HomeController::class);
 Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
      
-    $prueba = null;
+    DB::table('users')->upsert(
+        [
+            'name' => 'Joao Cabral',
+            'last_name' => 'de Matos Carvalho',
+            'email' => 'joaocabral@devfullstack.com',
+            'password' => bcrypt('123456789')
+        ],
+        [
+            'email'
+        ],
+        [
+            'name',
+            'last_name'
+        ]
+    );
 
-    return DB::table('users')
-        ->when($prueba, function($query, $prueba){
-            $query->where('id', '>=', $prueba);
-        })
-        ->get();
+    return 'Usuario creado o actualizado correctamente';
 });
 
 

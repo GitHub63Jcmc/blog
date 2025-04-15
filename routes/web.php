@@ -12,8 +12,10 @@ Route::get('/', HomeController::class);
 Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
      
-    DB::table('users')
-    ->get();
-    return '$users';
+    $users = DB::table('users')
+    ->paginate(15);
+    return view('prueba', compact('users'));
+
 });
+
 

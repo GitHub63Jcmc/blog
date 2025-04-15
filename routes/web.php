@@ -13,11 +13,7 @@ Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
      
     DB::table('users')
-        ->where('id', 1000)
-        ->delete();
-
-    return 'Usuario se Elimino correctamente';
+    ->get();
+    return '$users';
 });
-
-
 

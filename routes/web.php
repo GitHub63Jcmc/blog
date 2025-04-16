@@ -13,7 +13,10 @@ Route::resource('posts', PostController::class);
 Route::get('/prueba', function(){
      
     $users = DB::table('users')
-    ->paginate(15);
+    ->paginate(15, ['*'], 'pageUsers');
+
+    // return $users;
+
     return view('prueba', compact('users'));
 
 });

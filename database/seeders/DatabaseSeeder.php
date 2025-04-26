@@ -1,9 +1,9 @@
 <?php
 
 namespace Database\Seeders;
-
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Category::factory(10)->create();
+        Post::factory(100)->create();
     }
 }

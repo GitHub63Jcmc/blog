@@ -1,0 +1,10 @@
+Páginas importantes...
+
+componentes hechos (como bootstrap)
+https://sweetalert2.github.io/
+
+tailwind
+https://tailwindcss.com/docs/cursor
+
+flux componentes(como bootstrap)
+https://fluxui.dev/components/button

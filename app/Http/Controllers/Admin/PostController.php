@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use id;
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -54,9 +57,6 @@ class PostController extends Controller
     {
         $tags = $post->tags->pluck('id')->toArray();
 
-        // $response = in_array(3, $tags);
-        // dd($response);
-
         $categories = Category::all();
         $tags = Tag::all();
 
@@ -67,13 +67,28 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
+
+            'slug' => [
+                Rule::requiredIf(function() use ($post) {
+                    return !$post->published_at;
+                }),
+                'string',
+                'max:255',
+                Rule::unique('post')
+                    ->ignore($post->id),
+            ],
+            'image' => 'nullable|image|max:2048',
             'category_id' => 'required|exists:categories,id',
             'excerpt' => 'required_if:is_published,1|string',
             'content' => 'required_if:is_published,1|string',
             'tags' => 'array',
             'is_published' => 'boolean',
         ]);
+
+        if($request->hasFile('image')) {
+            Storage::put('posts', $request->image);
+            return "Imagen subida";
+        }
 
         $post->update($data);
 

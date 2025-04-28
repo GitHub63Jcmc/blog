@@ -19,7 +19,8 @@
         </flux:breadcrumbs>
     </div>
 
-    <form action="{{route('admin.posts.update', $post)}}" method="POST">
+    <form action="{{route('admin.posts.update', $post)}}" method="POST" enctype="multipart/form-data">
+
         @csrf
         @method('PUT')
 
@@ -35,7 +36,11 @@
 
         <div class="bg-white px-6 py-8 dounded-lg shadow-lg space-y-4">
             <flux:input name="title" label="Título" value="{{old('title', $post->title)}}" />
-            <flux:input name="slug" label="Slug" value="{{old('slug', $post->slug)}}" />
+
+            @If(!$post->published_at)
+                <flux:input name="slug" label="Slug" value="{{old('slug', $post->slug)}}" />
+            @endif
+
     
             <flux:select label="Categoría" name="category_id">
                 @foreach ($categories as $category)

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -51,9 +52,15 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $tags = $post->tags->pluck('id')->toArray();
+
+        // $response = in_array(3, $tags);
+        // dd($response);
 
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     public function update(Request $request, Post $post)
@@ -64,10 +71,19 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'excerpt' => 'required_if:is_published,1|string',
             'content' => 'required_if:is_published,1|string',
+            'tags' => 'array',
             'is_published' => 'boolean',
         ]);
 
         $post->update($data);
+
+        $tags = [];
+
+        foreach ($request->tags ?? [] as $tag) {
+            $tags[] = Tag::firstOrCreate(['name' => $tag]);
+        }
+
+        $post->tags()->sync($tags);
 
         session()->flash('swal', [
             'icon' => 'success',

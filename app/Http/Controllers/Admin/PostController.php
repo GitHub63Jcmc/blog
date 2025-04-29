@@ -86,8 +86,8 @@ class PostController extends Controller
         ]);
 
         if($request->hasFile('image')) {
-            Storage::put('posts', $request->image);
-            return "Imagen subida";
+            $data['image_path'] = Storage::put('posts', $request->image);
+            
         }
 
         $post->update($data);

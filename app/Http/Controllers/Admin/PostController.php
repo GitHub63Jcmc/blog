@@ -74,7 +74,7 @@ class PostController extends Controller
                 }),
                 'string',
                 'max:255',
-                Rule::unique('post')
+                Rule::unique('posts')
                     ->ignore($post->id),
             ],
             'image' => 'nullable|image|max:2048',
@@ -86,8 +86,21 @@ class PostController extends Controller
         ]);
 
         if($request->hasFile('image')) {
-            $data['image_path'] = Storage::put('posts', $request->image);
-            
+
+            if($post->image_path) { // Se tiene algo en image path
+                Storage::delete($post->image_path);
+            }
+
+            $extension = $request->image->extension();
+            $nameFile = $post->slug . '.' . $extension;
+
+            while(Storage::exists('posts/' . $nameFile)) {
+                $nameFile = str_replace('.' . $extension, '-copia.' . $extension, $nameFile);
+            }
+
+            return $nameFile;
+
+            $data['image_path'] = Storage::putFileAs('posts', $request->image, $nameFile);
         }
 
         $post->update($data);

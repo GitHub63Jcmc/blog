@@ -32,6 +32,13 @@
                     Cambiar Imagen
                     <input class="hidden" type="file" name="image" accept="image/*" onchange="preview_image(event, '#imgPreview')">
                 </label>
+
+                <div class="bg-white mt-4 px-2 py-2 rounded-lg cursor-pointer">
+                    <a href="{{route('prueba', $post)}}">
+                        Descargar imagen
+                    </a>
+                </div>
+
             </div>
         </div>
 

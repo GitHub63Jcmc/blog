@@ -9,4 +9,5 @@ Route::get('/', function () {
 })->name('dashboard');
 
 Route::resource('categories', CategoryController::class);
+
 Route::resource('posts', PostController::class);

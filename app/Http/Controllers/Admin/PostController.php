@@ -9,13 +9,17 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::latest('id')->paginate();
+        $posts = Post::latest('id')
+            ->where('user_id', auth()->id())
+            ->paginate();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -55,7 +59,8 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $tags = $post->tags->pluck('id')->toArray();
+
+        Gate::authorize('author', $post);
 
         $categories = Category::all();
         $tags = Tag::all();
@@ -65,6 +70,9 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+
+        Gate::authorize('author', $post);
+
         $data = $request->validate([
             'title' => 'required|string|max:255',
 
@@ -124,6 +132,16 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        //
+        Gate::authorize('author', $post);
+
+        $post->delete();
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Post actualizado!',
+            'text' => 'El post se ha eliminado correctamente.',
+        ]);
+
+        return redirect()->route('admin.posts.index');
     }
 }

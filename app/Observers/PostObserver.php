@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Post;
-use Illuminate\Container\Attributes\Storage;
+// use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 
 class PostObserver
 {

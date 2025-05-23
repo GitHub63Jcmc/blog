@@ -29,6 +29,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->foreignId('category_id')
+                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
 

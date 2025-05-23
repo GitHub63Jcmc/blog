@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use id;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
@@ -11,14 +10,14 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
     public function index()
     {
         $posts = Post::latest('id')
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()->user()->id)
             ->paginate();
 
         return view('admin.posts.index', compact('posts'));
@@ -52,96 +51,87 @@ class PostController extends Controller
         return redirect()->route('admin.posts.edit', $post);
     }
 
+// ---------------------------------------------------------------------------------------------------
     public function show(Post $post)
     {
+        Gate::authorize('admin', $post);
+
         return view('admin.posts.show', compact('post'));
     }
 
     public function edit(Post $post)
     {
+        Gate::authorize('admin', $post);
 
-        Gate::authorize('author', $post);
-
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
+        return view('admin.posts.edit', compact('post'));
     }
 
     public function update(Request $request, Post $post)
     {
+        Gate::authorize('admin', $post);
 
-        Gate::authorize('author', $post);
-
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
             'slug' => [
-                Rule::requiredIf(function() use ($post) {
-                    return !$post->published_at;
-                }),
+                Rule::requiredIf(!$post->published_at),
                 'string',
                 'max:255',
-                Rule::unique('posts')
-                    ->ignore($post->id),
+                Rule::unique('posts')->ignore($post->id),
             ],
-            'image' => 'nullable|image|max:2048',
-            'category_id' => 'required|exists:categories,id',
-            'excerpt' => 'required_if:is_published,1|string',
-            'content' => 'required_if:is_published,1|string',
-            'tags' => 'array',
-            'is_published' => 'boolean',
+            'content' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'max:1024'],
         ]);
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $nameFile = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
 
-            if($post->image_path) { // Se tiene algo en image path
+            while (Storage::exists("posts/{$nameFile}")) {
+                $nameFile = str_replace('.' . $file->getClientOriginalExtension(), '-copia.' . $file->getClientOriginalExtension(), $nameFile);
+            }
+
+            $path = $file->storeAs('posts', $nameFile);
+
+            // Elimina imagen anterior si existe
+            if ($post->image_path) {
                 Storage::delete($post->image_path);
             }
 
-            $extension = $request->image->extension();
-            $nameFile = $post->slug . '.' . $extension;
-
-            while(Storage::exists('posts/' . $nameFile)) {
-                $nameFile = str_replace('.' . $extension, '-copia.' . $extension, $nameFile);
-            }
-
-            return $nameFile;
-
-            $data['image_path'] = Storage::putFileAs('posts', $request->image, $nameFile);
+            $post->image_path = $path;
         }
 
-        $post->update($data);
+        $post->title = $request->title;
+        $post->slug = $post->published_at ? $post->slug : $request->slug;
+        $post->content = $request->content;
+        $post->save();
 
-        $tags = [];
+        $tagIds = collect($request->tags ?? [])->map(function ($tag) {
+            return Tag::firstOrCreate(['name' => $tag])->id;
+        });
 
-        foreach ($request->tags ?? [] as $tag) {
-            $tags[] = Tag::firstOrCreate(['name' => $tag]);
-        }
+        $post->tags()->sync($tagIds);
 
-        $post->tags()->sync($tags);
-
-        session()->flash('swal', [
-            'icon' => 'success',
+        return redirect()->route('posts.index')->with('status', [
+            'type' => 'success',
             'title' => '¡Post actualizado!',
             'text' => 'El post se ha actualizado correctamente.',
         ]);
-
-        return redirect()->route('admin.posts.edit', $post);
     }
 
     public function destroy(Post $post)
     {
-        Gate::authorize('author', $post);
+        Gate::authorize('admin', $post);
+
+        if ($post->image_path) {
+            Storage::delete($post->image_path);
+        }
 
         $post->delete();
 
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => '¡Post actualizado!',
+        return redirect()->route('posts.index')->with('status', [
+            'type' => 'success',
+            'title' => '¡Post eliminado!',
             'text' => 'El post se ha eliminado correctamente.',
         ]);
-
-        return redirect()->route('admin.posts.index');
     }
 }

@@ -5,21 +5,17 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            
         <title>{{ $title ?? 'laravel' }}</title>
         {{-- <title>{{ $title }}</title> --}}
-            
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
         {{-- sweetalert2 --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         @stack('css')
-            
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @fluxAppearance
     </head>
+
     <body class="flex min-h-screen bg-white dark:bg-zinc-800">
         {{-- <flux:sidebar sticky stashable class="flex flex-col min-h-screen border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900"> --}}
         <flux:sidebar sticky stashable class="flex flex-col min-h-screen border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
@@ -37,6 +33,9 @@
                     </flux:navlist.item>
                     <flux:navlist.item icon="book-open" :href="route('admin.posts.index')" :current="request()->routeIs('admin.posts.*')" wire:navigate>
                         Posts
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="key" :href="route('admin.permissions.index')" :current="request()->routeIs('admin.permissions.*')" wire:navigate>
+                        Permisos
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

@@ -28,5 +28,9 @@ class DatabaseSeeder extends Seeder
 
         Category::factory(10)->create();
         Post::factory(100)->create();
+
+        $this->call([
+            PermissionSeeder::class
+        ]);
     }
 }

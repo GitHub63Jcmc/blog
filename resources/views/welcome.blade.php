@@ -17,6 +17,7 @@
                             {{ $post->excerpt }}
                         </div>
                     </div>
+                    <h1>JOOOAOOAOAOAOAO</h1>
                 </article>
             </li> 
         @endforeach

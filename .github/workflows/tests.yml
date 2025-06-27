@@ -120,5 +120,6 @@ jobs:
       - name: Run Tests
         run: ./vendor/bin/pest
 
-# Joao Cabral de Matos Carvalho 
-# Y entonces para que sirve este archivo?
+      - name: Copy Environment File
+        run: cp .env.example .env
+
